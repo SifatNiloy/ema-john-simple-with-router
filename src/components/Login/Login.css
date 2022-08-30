@@ -26,3 +26,25 @@
     height: 55px;
     font-size: 24px;
 }
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.form-submit {
+    width: 415px;
+    height: 55px;
+    background-color: rgba(243, 196, 78, 0.808);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-submit:hover {
+    background-color: rgba(233, 188, 75, 0.952);
+}
+
+.form-link {
+    color: #ff9900;
+    text-decoration: none;
+}
