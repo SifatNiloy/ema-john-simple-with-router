@@ -1,12 +1,19 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import auth from '../../firebase.init';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+
 
 const SignUp = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [confirmpassword, setConfirmpassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
     const [error, setError] = useState('')
+    const navigate = useNavigate()
+
+    const [createUserWithEmailAndPassword, user] = useCreateUserWithEmailAndPassword(auth);
 
 
     const handleEmailBlur = event => {
@@ -16,22 +23,32 @@ const SignUp = () => {
         setPassword(event.target.value);
     }
     const handleConfirmPasswordBlur = event => {
-        setPassword(event.target.value);
+        setConfirmPassword(event.target.value);
+    }
+    if (user) {
+        navigate('/shop')
     }
     const handleCreateUser = event => {
         event.preventDefault();
-        if (password !== confirmpassword) {
-            setError('your two password did not match')
+        if (password !== confirmPassword) {
+            setError('your two passwords did not match')
             return;
         }
+        if (password.length < 6) {
+            setError('password must be 6 characters or longer')
+            return;
+        }
+
+        createUserWithEmailAndPassword(email, password)
     }
+
 
 
     return (
         <div className='form-container'>
             <div>
                 <h2 className='form-title'>Sign Up</h2>
-                <form action="">
+                <form onSubmit={handleCreateUser} action="">
                     <div className='input-group'>
                         <label htmlFor="email">Email</label>
                         <input onBlur={handleEmailBlur} type="email" name="email" id="" required />
